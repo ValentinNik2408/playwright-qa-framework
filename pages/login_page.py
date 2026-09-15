@@ -4,6 +4,7 @@ class LoginPage:
         self.email_input = page.locator("#email")
         self.password_input = page.locator("#password")
         self.login_button = page.locator(".btnSubmit")
+        self.error_message = page.locator(".help-block")
 
     def navigate(self):
         self.page.goto("https://practicesoftwaretesting.com/auth/login")
