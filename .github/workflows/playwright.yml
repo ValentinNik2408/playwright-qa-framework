@@ -1,0 +1,33 @@
+name: Playwright Tests (Windows & Chromium)
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    timeout-minutes: 15
+    # Changes the pipeline environment to a Windows Server host
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    # Only installs Chromium to make the pipeline run much faster
+    - name: Ensure Chromium is installed
+      run: playwright install chromium
+
+    # Explicitly targets Chromium in headless mode for CI execution
+    - name: Run Playwright tests
+      run: pytest --browser chromium
