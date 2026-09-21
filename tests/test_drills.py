@@ -20,16 +20,24 @@ def test_successful_login(page: Page):
     page.wait_for_timeout(500)
     expect(home_page.main_image).to_be_visible()
     expect(home_page.web_page_logo).to_be_visible()
-    
+
+    #Set
     sorting_dropdown = page.locator(".form-select")
-    sorting_dropdown.select_option("Name (A - Z)")
-    page.wait_for_timeout(500)
-
     first_element = page.locator("a:nth-child(1) div:nth-child(2) h5:nth-child(1)")
-    expect(first_element).to_have_text("Adjustable Wrench")
-    page.wait_for_timeout(500)
+    second_element = page.locator("a:nth-child(2) div:nth-child(2) h5:nth-child(1)")
+    search_bar = page.locator(".form-control")
+    search_button = page.locator("button[type=submit]")
 
+    #Act
     sorting_dropdown.select_option("Price (High - Low)")
     page.wait_for_timeout(500)
-    expect(first_element).to_have_text(" Drawer Tool Cabinet ")
+    search_bar.fill("drill")
+    search_button.click()
+
+    #Assert
+    expect(first_element).to_have_text(" Cordless Drill 20V ")
+    page.wait_for_timeout(500)
+    if second_element.all_inner_texts() != " Cordless Drill 18V ":
+        raise AssertionError ("Sorting is wrong")
+    # expect(second_element).to_have_text(" Cordless Drill 18V ")
     page.wait_for_timeout(500)
