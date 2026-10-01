@@ -33,5 +33,6 @@ class CheckoutPage:
             price = data.locator("td").nth(3).inner_text()
             clean_price=price.replace('$', '')
             total_price += float(clean_price)
+            total_price = round(total_price, 2)
         print("Total price is:",total_price)
         assert(total_price) == total_price_expectation                

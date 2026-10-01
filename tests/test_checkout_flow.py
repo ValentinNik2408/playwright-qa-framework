@@ -1,6 +1,7 @@
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.checkout_page import CheckoutPage
+from functions.ts_checkout import *
 
 from playwright.sync_api import Page, expect
 
@@ -20,7 +21,7 @@ def test_checkout_flow(page: Page):
 
     #Adding first element to cart
     button_add_to_cart = page.locator("#btn-add-to-cart")
-    page.get_by_text(" Combination Pliers ").click()
+    page.get_by_role("heading", name="Bolt Cutters", exact=True).click()
     button_add_to_cart.click()
     cart_count = page.locator("#lblCartCount")
     expect(cart_count).to_have_text("1")
@@ -38,23 +39,21 @@ def test_checkout_flow(page: Page):
     expect(page).to_have_url("https://practicesoftwaretesting.com/checkout")
 
     #Checking if correct items are added to cart
-    checkout_page.correct_items_added(page, "Combination Pliers", "Pliers")
+    checkout_page.correct_items_added(page, "Bolt Cutters", "Pliers")
     #Checking if the calculation is correct for the added items in cart
-    checkout_page.calculate_total_price(page, 26.16)
+    checkout_page.calculate_total_price(page, 60.42)
     page.locator(".btn[data-test='proceed-1']").click()
 
     expect(page.get_by_text("Hello John Doe, you are already logged in. You can proceed to checkout.")).to_be_visible()
     page.locator(".btn[data-test='proceed-2']").click()
+    #Fill fields for Billing Adress
+    billing_adress(page)
 
-    page.locator("#country").select_option("Bulgaria")
-    page.locator("#postal_code").fill("1000")
-    page.locator("#house_number").fill("15")
-    page.locator("#street").fill("Tsarigradsko Shose")
-    page.locator("#city").fill("Sofia")
-    page.locator("#city").fill("Sofia")
-    page.locator("#state").fill("Sofia")
-    page.locator(".btn[data-test='proceed-3']").click()
-    page.locator("#payment-method").select_option("cash-on-delivery")
-    page.locator(".btn[data-test='finish']").click()
+    #Walkthrough Cash on Delivery option
+    cash_on_delivery_option(page)
+
+    #Walkthrough Bank Transfer option
+    bank_transfer_option(page)
     
-    expect(page.locator(".help-block")).to_be_visible()
+    #Walkthrough Credit Card option
+    credit_card_option(page)
