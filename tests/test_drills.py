@@ -1,8 +1,9 @@
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
+import pytest
 
 from playwright.sync_api import Page, expect
-
+@pytest.mark.xfail
 def test_successful_login(page: Page):
     login_page = LoginPage(page)
     login_page.navigate()

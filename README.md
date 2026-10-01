@@ -22,17 +22,24 @@ playwright-qa-framework/
 │
 ├── pages/                  # Page Object Classes (UI Element & Action isolation)
 │   ├── __init__.py
-│   ├── base_page.py
+│   ├── checkout_page.py
+│   ├── home_page.py
 │   └── login_page.py
 │
 ├── tests/                  # Test Suites & Framework Configuration
 │   ├── __init__.py
-│   ├── conftest.py         # Pytest fixtures (Setup & Teardown lifecycles)
-│   └── test_login.py       # Core test scripts
+│   ├── conftest.py                     # Pytest fixtures (Setup & Teardown lifecycles)
+|   ├── test_checkout_flow.py           # Test about basic checkout flow
+|   ├── test_contact_page.py            # Test about functionalities of contact page
+|   ├── test_drills.py                  # Test about sorting drills (found bug in price sorting)
+|   ├── test_home_page.py               # Test about main the elements in home page
+│   ├── test_successful_login.py        # Test with correct email and password
+|   └── test_unsuccessful_login.py      # Test with incorrect email and password
+|   
 │
 ├── .gitignore              # Safeguards local caches (__pycache__) and venv
-├── pytest.ini              # Default execution configurations (Chromium, Headed)
 ├── README.md               # Framework documentation
+├── run_tests.bat           # Default execution configurations (Chromium, Headed)
 └── requirements.txt        # Managed Python dependencies
 ```
 
